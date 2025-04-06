@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+
+
+{% block title %}ElitteRadio{% endblock %}
+
+
+{% block head %}
+<style>
+    /* Estilos base compatibles con todos los navegadores */
+    .range-slider {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        background: transparent;
+        outline: none;
+        margin: 15px 0;
+    }
+
+    /* WebKit (Chrome, Safari) */
+    .range-slider::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        background: #d1d5db;
+        /* Fondo gris de la barra */
+        border-radius: 3px;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        background: #ffffff;
+        /* Thumb completamente blanco */
+        border: none;
+        /* Sin borde */
+        border-radius: 50%;
+        cursor: pointer;
+        margin-top: -6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Firefox */
+    .range-slider::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        background: #d1d5db;
+        border-radius: 3px;
+    }
+
+    .range-slider::-moz-range-progress {
+        height: 6px;
+        background: #ffffff;
+        /* Progreso blanco */
+        border-radius: 3px;
+    }
+
+    .range-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        background: #ffffff;
+        border: none;
+        /* Sin borde */
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    /* Edge/IE */
+    .range-slider::-ms-track {
+        width: 100%;
+        height: 6px;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    .range-slider::-ms-fill-lower {
+        background: #ffffff;
+        border-radius: 3px;
+    }
+
+    .range-slider::-ms-fill-upper {
+        background: #d1d5db;
+        border-radius: 3px;
+    }
+
+    .range-slider::-ms-thumb {
+        width: 18px;
+        height: 18px;
+        background: #ffffff;
+        border: none;
+        /* Sin borde */
+        border-radius: 50%;
+        cursor: pointer;
+        margin-top: 0;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<section x-data="radioPlayer()" class="fixed inset-0 flex flex-col bg-white">
+
+    <section class="flex-1 overflow-auto space-y-4 p-4 w-full md:w-[540px] mx-auto">
+        {% for radio in object_list %}
+        <div class="flex h-28 border rounded-lg shadow-md items-start" data-radio-index="{{forloop.counter0}}"
+            data-radio-url="{{radio.link}}" data-radio-img="{{radio.img.url}}" data-radio-name="{{radio.name}}">
+
+            <div class="w-28 h-full">
+                <img class="object-cover h-full w-full rounded-l-lg" src="{{radio.img.url}}" alt="{{radio.name}}">
+            </div>
+
+            <div class="flex-1 pl-4 pt-2">
+                <h2 class="text-2xl font-bold text-gray-800">{{radio.name}}</h2>
+
+                <div class="flex gap-2 items-center">
+                    <span class="text-sm font-medium text-gray-800">Oyentes: </span>
+                    <span class="text-sm font-light text-gray-400">{{ radio.listeners }}</span>
+                </div>
+            </div>
+
+            <div class="flex h-full items-end pb-2 pr-4">
+                <button type="button" @click="changeAudio({{ forloop.counter0 }})"
+                    class="h-9 w-14 rounded-full bg-gray-800 hover:shadow-lg flex justify-center items-center gap-2">
+                    <span class="text-white text-xs">Play</span>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <footer class="h-20 bg-gray-600 flex items-center w-full md:w-[540px] mx-auto">
+        <audio x-ref="player"></audio>
+
+        <div class="w-20 ml-4 flex">
+            <div class="w-14 h-14 flex items-center justify-center">
+                <img :src="imgUrl" :alt="radioName" class="object-cover rounded-lg">
+            </div>
+        </div>
+
+        <div class="flex-1 flex items-start justify-start h-full mt-10">
+            <p class="text-xs font-semibold text-white" x-text="radioName"></p>
+        </div>
+
+        <div class="flex gap-2 items-center">
+            <button type="button" @click="previous" class="w-10 h-10 text-white flex items-center justify-center">
+                {% include 'includes/icons/player_back_icon.html' %}
+            </button>
+
+            <template x-if="!isPlaying">
+                <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                    <button @click="play"
+                        class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
+                        <span class="text-xs font-semibold text-white">
+                            {% include 'includes/icons/play_icon.html' %}
+                        </span>
+                    </button>
+                </div>
+            </template>
+
+            <template x-if="isPlaying">
+                <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                    <button @click="pause"
+                        class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
+                        <span class="text-xs font-semibold text-white">
+                            {% include 'includes/icons/pause_icon.html' %}
+                        </span>
+                    </button>
+                </div>
+            </template>
+
+            <button type="button" @click="next" class="w-10 h-10 text-white flex items-center justify-center">
+                {% include 'includes/icons/player_next_icon.html' %}
+            </button>
+        </div>
+
+        <span class="flex-1"></span>
+
+        <section class="flex items-center gap-2 w-24 mr-4">
+            <button class="text-white" @click="toggleVolume">
+
+                <span x-show="volume === 0" style="display: none;">
+                    {% include 'includes/icons/mute_icon.html' %}
+                </span>
+
+                <span x-show="volume > 0">
+                    {% include 'includes/icons/volume_icon.html' %}
+                </span>
+
+            </button>
+
+
+            <input class="p-0 m-0 w-full cursor-pointer range-slider" type="range" min="0" max="1" step="0.05"
+                x-model.number="volume" @input="updateVolume" />
+
+        </section>
+    </footer>
+
+</section>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    document.getElementById('main').style.height = `${window.innerHeight}px`;
+
+    console.log(`${window.innerHeight}px`)
+
+    function radioPlayer() {
+        return {
+            selectedIndex: null,
+            totalRadios: Number('{{ object_list|length|default:"0" }}'),
+            imgUrl: '',
+            radioName: '',
+            streamUrl: '', // URL de ejemplo
+            isPlaying: false,
+            volume: 0.5,
+            changeAudio(index) {
+                const radioElement = document.querySelector(`[data-radio-index="${index}"]`);
+                if (!radioElement) return;
+
+                this.pause();
+                this.selectedIndex = index;
+                this.streamUrl = radioElement.dataset.radioUrl + '/stream';
+                this.imgUrl = radioElement.dataset.radioImg;
+                this.radioName = radioElement.dataset.radioName;
+                this.play();
+            },
+            play() {
+                if (this.streamUrl && this.selectedIndex !== null) {
+                    this.$refs.player.src = this.streamUrl;
+                    this.$refs.player.play();
+                    this.isPlaying = true;
+                }
+            },
+            pause() {
+                this.$refs.player.pause();
+                this.$refs.player.currentTime = 0;
+                this.isPlaying = false;
+            },
+            // Función para actualizar el volumen
+            updateVolume() {
+                this.$refs.player.volume = this.volume;
+            },
+
+            toggleVolume() {
+                this.volume = this.volume === 0 ? 1 : 0;
+                this.updateVolume();
+            },
+            next() {
+                if (this.selectedIndex === null) return;
+                const nextIndex = (this.selectedIndex + 1) % this.totalRadios;
+                this.changeAudio(nextIndex);
+            },
+
+            previous() {
+                if (this.selectedIndex === null) return;
+                const prevIndex = (this.selectedIndex - 1 + this.totalRadios) % this.totalRadios;
+                this.changeAudio(prevIndex);
+            },
+        };
+    }
+</script>
+
+{% endblock %}
