@@ -40,7 +40,7 @@ def radio_fm_get_listeners():
 def run():
 
     radio_fm_get_listeners()
-    schedule.every(15).minutes.do(radio_fm_get_listeners)
+    schedule.every(5).minutes.do(radio_fm_get_listeners)
 
     print("running")
     while True:
