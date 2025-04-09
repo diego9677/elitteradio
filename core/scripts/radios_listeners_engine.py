@@ -19,7 +19,7 @@ def fetch_data(data):
         return radio_id, current_listeners
     except Exception as e:
         print(f"Error con {url}: {e}")
-        return radio_id, 0  # En caso de error, setea oyentes en 0
+        return radio_id, None  # En caso de error, setea oyentes en 0
 
 
 def radio_fm_get_listeners():
@@ -31,7 +31,8 @@ def radio_fm_get_listeners():
 
     # Actualizar oyentes en la base de datos
     for radio_id, listeners in listeners_radio:
-        RadioFM.objects.filter(id=radio_id).update(listeners=listeners)
+        if listeners:
+            RadioFM.objects.filter(id=radio_id).update(listeners=listeners)
 
     print("Oyentes actualizados:", listeners_radio)
     close_old_connections()
