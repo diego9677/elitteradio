@@ -133,14 +133,14 @@
     <footer class="h-20 bg-gray-600 flex items-center w-full md:w-[540px] mx-auto">
         <audio x-ref="player"></audio>
 
-        <div class="w-20 ml-4 flex">
-            <div class="w-14 h-14 flex items-center justify-center">
+        <div class="w-14 ml-4 flex">
+            <div class="w-12 h-12 flex items-center justify-center">
                 <img :src="imgUrl" :alt="radioName" class="object-cover rounded-lg">
             </div>
         </div>
 
         <div class="flex-1 flex items-start justify-start h-full mt-10">
-            <p class="text-xs font-semibold text-white" x-text="radioName"></p>
+            <p class="text-xs font-semibold text-white line-clamp-2" x-text="radioName"></p>
         </div>
 
         <div class="flex gap-2 items-center">
