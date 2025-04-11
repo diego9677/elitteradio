@@ -192,12 +192,10 @@
 <script>
     document.getElementById('main').style.height = `${window.innerHeight}px`;
 
-    console.log(`${window.innerHeight}px`)
-
     function radioPlayer() {
         return {
             selectedIndex: null,
-            totalRadios: Number('{{ object_list|length|default:"0" }}'),
+            totalRadios: Number('{{ total_radios|default:"0" }}'),
             imgUrl: '',
             radioName: '',
             streamUrl: '', // URL de ejemplo
@@ -235,6 +233,7 @@
                 this.volume = this.volume === 0 ? 1 : 0;
                 this.updateVolume();
             },
+
             next() {
                 if (this.selectedIndex === null) return;
                 const nextIndex = (this.selectedIndex + 1) % this.totalRadios;
