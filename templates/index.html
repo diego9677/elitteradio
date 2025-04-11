@@ -102,32 +102,17 @@
 {% block content %}
 <section id="main" x-data="radioPlayer()" class="fixed inset-0 flex flex-col bg-white">
 
-    <section class="flex-1 overflow-auto space-y-4 p-4 w-full md:w-[540px] mx-auto">
-        {% for radio in object_list %}
-        <div class="flex h-28 border rounded-lg shadow-md items-start" data-radio-index="{{forloop.counter0}}"
-            data-radio-url="{{radio.link}}" data-radio-img="{{radio.img.url}}" data-radio-name="{{radio.name}}">
+    <section id="radio-list" hx-get="{% url 'radio-list' %}" hx-trigger="load, every 60s" hx-swap="innerHTML"
+        class="flex-1 overflow-auto space-y-4 p-4 w-full md:w-[540px] mx-auto">
 
-            <div class="w-28 h-full">
-                <img class="object-cover h-full w-full rounded-l-lg" src="{{radio.img.url}}" alt="{{radio.name}}">
-            </div>
-
-            <div class="flex-1 pl-4 pt-2">
-                <h2 class="text-2xl font-bold text-gray-800">{{radio.name}}</h2>
-
-                <div class="flex gap-2 items-center">
-                    <span class="text-sm font-light text-gray-400">Oyentes: </span>
-                    <span class="text-sm font-semibold text-gray-800">{{ radio.listeners }}</span>
-                </div>
-            </div>
-
-            <div class="flex h-full items-end pb-2 pr-4">
-                <button type="button" @click="changeAudio({{ forloop.counter0 }})"
-                    class="h-9 w-14 rounded-full bg-gray-800 hover:shadow-lg flex justify-center items-center gap-2">
-                    <span class="text-white text-xs">Play</span>
-                </button>
-            </div>
+        <div class="flex justify-center items-center h-full">
+            <span class="text-blue-500 animate-spin">
+                {% with 50 as size %}
+                {% include 'includes/icons/spinner_icon.html' %}
+                {% endwith %}
+            </span>
         </div>
-        {% endfor %}
+
     </section>
 
     <footer x-show="streamUrl !== ''" class="h-20 bg-gray-600 flex items-center w-full md:w-[540px] mx-auto"

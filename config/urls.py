@@ -19,13 +19,12 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from django.views.generic import RedirectView
-from core.views import RadioFMListView
+from core.views import RadioFMListView, IndexTemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('radios-fm/', RadioFMListView.as_view(), name='radios-fm'),
-    path('', RedirectView.as_view(pattern_name='radios-fm'), name='index')
+    path('radio-list/', RadioFMListView.as_view(), name='radio-list'),
+    path('', IndexTemplateView.as_view(), name='index'),
 ]
 
 if settings.DEBUG:
