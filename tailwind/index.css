@@ -18,3 +18,94 @@ select {
 .btn-secondary {
     @apply outline-none flex justify-center items-center transition-all rounded-md ease-out duration-200 hover:ring-1 hover:ring-gray-300;
 }
+
+
+/* Estilos base compatibles con todos los navegadores */
+.range-slider {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    outline: none;
+    margin: 15px 0;
+}
+
+/* WebKit (Chrome, Safari) */
+.range-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: #d1d5db;
+    /* Fondo gris de la barra */
+    border-radius: 2px;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    /* Thumb completamente blanco */
+    border: none;
+    /* Sin borde */
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Firefox */
+.range-slider::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.range-slider::-moz-range-progress {
+    height: 4px;
+    background: #ffffff;
+    /* Progreso blanco */
+    border-radius: 3px;
+}
+
+.range-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: none;
+    /* Sin borde */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Edge/IE */
+.range-slider::-ms-track {
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+.range-slider::-ms-fill-lower {
+    background: #ffffff;
+    border-radius: 3px;
+}
+
+.range-slider::-ms-fill-upper {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.range-slider::-ms-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: none;
+    /* Sin borde */
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: 0;
+}

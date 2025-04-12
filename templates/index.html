@@ -1,106 +1,15 @@
 {% extends 'base.html' %}
 
-
-{% block title %}ElitteRadio{% endblock %}
-
-
-{% block head %}
-<style>
-    /* Estilos base compatibles con todos los navegadores */
-    .range-slider {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        width: 100%;
-        height: 4px;
-        background: transparent;
-        outline: none;
-        margin: 15px 0;
-    }
-
-    /* WebKit (Chrome, Safari) */
-    .range-slider::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 4px;
-        background: #d1d5db;
-        /* Fondo gris de la barra */
-        border-radius: 2px;
-    }
-
-    .range-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 16px;
-        height: 16px;
-        background: #ffffff;
-        /* Thumb completamente blanco */
-        border: none;
-        /* Sin borde */
-        border-radius: 50%;
-        cursor: pointer;
-        margin-top: -6px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Firefox */
-    .range-slider::-moz-range-track {
-        width: 100%;
-        height: 4px;
-        background: #d1d5db;
-        border-radius: 3px;
-    }
-
-    .range-slider::-moz-range-progress {
-        height: 4px;
-        background: #ffffff;
-        /* Progreso blanco */
-        border-radius: 3px;
-    }
-
-    .range-slider::-moz-range-thumb {
-        width: 16px;
-        height: 16px;
-        background: #ffffff;
-        border: none;
-        /* Sin borde */
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    /* Edge/IE */
-    .range-slider::-ms-track {
-        width: 100%;
-        height: 4px;
-        background: transparent;
-        border-color: transparent;
-        color: transparent;
-    }
-
-    .range-slider::-ms-fill-lower {
-        background: #ffffff;
-        border-radius: 3px;
-    }
-
-    .range-slider::-ms-fill-upper {
-        background: #d1d5db;
-        border-radius: 3px;
-    }
-
-    .range-slider::-ms-thumb {
-        width: 16px;
-        height: 16px;
-        background: #ffffff;
-        border: none;
-        /* Sin borde */
-        border-radius: 50%;
-        cursor: pointer;
-        margin-top: 0;
-    }
-</style>
-{% endblock %}
-
-
 {% block content %}
-<section id="main" x-data="radioPlayer()" class="fixed inset-0 flex flex-col bg-white">
+<main id="main" x-data="radioPlayer()" class="fixed inset-0 flex flex-col bg-white">
+
+    <header
+        class="h-16 border-b border-gray-200 shadow-md w-full md:w-[540px] mx-auto flex flex-col justify-center px-4">
+        <h4 class="text-sm font-bold text-black">Tu Guía de Radios en Línea</h4>
+        <p class="text-xs font-light text-gray-800">
+            Descubre y disfruta de las mejores radios de Bolivia en un solo lugar
+        </p>
+    </header>
 
     <section id="radio-list" hx-get="{% url 'radio-list' %}" hx-trigger="load, every 60s" hx-swap="innerHTML"
         class="flex-1 overflow-auto space-y-4 p-4 w-full md:w-[540px] mx-auto">
@@ -183,7 +92,7 @@
 
     </footer>
 
-</section>
+</main>
 {% endblock %}
 
 
