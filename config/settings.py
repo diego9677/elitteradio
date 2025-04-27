@@ -133,6 +133,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = []
 STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
