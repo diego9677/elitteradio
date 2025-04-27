@@ -27,18 +27,33 @@
 </div>
 
 {% if forloop.counter0|add:1|divisibleby:3 %}
-<div class="h-[60px] w-[468px] my-4 mx-auto">
-    <script type="text/javascript">
-        atOptions = {
-            'key': 'a7b7f7faf9e352d883b81427ab245acd',
-            'format': 'iframe',
-            'height': 60,
-            'width': 468,
-            'params': {}
-        };
-    </script>
-    <script type="text/javascript"
-        src="//www.highperformanceformat.com/a7b7f7faf9e352d883b81427ab245acd/invoke.js"></script>
+<div class="h-[60px] w-[468px] my-4 mx-auto ad-container" data-ad-key="a7b7f7faf9e352d883b81427ab245acd">
 </div>
 {% endif %}
+
 {% endfor %}
+
+<script>
+    document.addEventListener("htmx:afterSwap", function () {
+        // Vuelve a inicializar el IntersectionObserver después de que HTMX haya actualizado el contenido
+        document.querySelectorAll('.ad-container').forEach(container => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const key = entry.target.dataset.adKey;
+                        const script = document.createElement('script');
+                        script.innerHTML = `
+                            atOptions = { key: '${key}', format: 'iframe', height: 60, width: 468 };
+                        `;
+                        entry.target.appendChild(script);
+                        const invokeScript = document.createElement('script');
+                        invokeScript.src = `//www.highperformanceformat.com/${key}/invoke.js`;
+                        entry.target.appendChild(invokeScript);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            observer.observe(container);
+        });
+    });
+</script>
