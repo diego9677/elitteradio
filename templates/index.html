@@ -1,97 +1,125 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main id="main" x-data="radioPlayer()" class="fixed inset-0 flex flex-col bg-white">
+<main id="main" x-data="radioPlayer()" class="fixed inset-0 flex justify-center items-center gap-10 bg-white">
 
-    <header
-        class="h-16 border-b border-gray-200 shadow-md w-full md:w-[540px] mx-auto flex flex-col justify-center px-4">
-        <h4 class="text-sm font-bold text-black">Tu Guía de Radios en Línea</h4>
-        <p class="text-xs font-light text-gray-800">
-            Descubre y disfruta de las mejores radios de Bolivia en un solo lugar
-        </p>
-    </header>
-
-    <section id="radio-list" hx-get="{% url 'radio-list' %}" hx-trigger="load, every 60s" hx-swap="innerHTML"
-        class="flex-1 overflow-auto space-y-4 p-4 w-full md:w-[540px] mx-auto">
-
-        <div class="flex justify-center items-center h-full">
-            <span class="text-blue-500 animate-spin">
-                {% with 50 as size %}
-                {% include 'includes/icons/spinner_icon.html' %}
-                {% endwith %}
-            </span>
-        </div>
-
+    <section class="hidden md:block h-[600px] w-[160px] border">
+        <script type="text/javascript">
+            atOptions = {
+                'key': '2ec090e966f6dc71ae825abd14659763',
+                'format': 'iframe',
+                'height': 600,
+                'width': 160,
+                'params': {}
+            };
+        </script>
+        <script type="text/javascript"
+            src="//www.highperformanceformat.com/2ec090e966f6dc71ae825abd14659763/invoke.js"></script>
     </section>
 
-    <footer x-show="streamUrl !== ''" class="h-20 bg-gray-600 flex items-center w-full md:w-[540px] mx-auto"
-        style="display: none;">
-        <audio x-ref="player"></audio>
+    <section class="flex flex-col w-full md:w-[540px] h-full">
+        <header class="h-16 border-b border-gray-200 shadow-md w-full mx-auto flex flex-col justify-center px-4">
+            <h4 class="text-sm font-bold text-black">Tu Guía de Radios en Línea</h4>
+            <p class="text-xs font-light text-gray-800">
+                Descubre y disfruta de las mejores radios de Bolivia en un solo lugar
+            </p>
+        </header>
 
-        <div class="flex-1 flex items-center gap-2 justify-start h-full pl-2">
+        <section id="radio-list" hx-get="{% url 'radio-list' %}" hx-trigger="load, every 60s" hx-swap="innerHTML"
+            class="flex-1 overflow-auto space-y-4 p-4 w-full mx-auto">
 
-            <div class="w-14 h-14 flex items-center justify-center">
-                <img :src="imgUrl" :alt="radioName" class="object-cover rounded-lg">
+            <div class="flex justify-center items-center h-full">
+                <span class="text-blue-500 animate-spin">
+                    {% with 50 as size %}
+                    {% include 'includes/icons/spinner_icon.html' %}
+                    {% endwith %}
+                </span>
             </div>
 
-            <p class="text-xs font-semibold text-white line-clamp-2" x-text="radioName"></p>
-        </div>
+        </section>
 
-        <div class="flex gap-2 items-center">
-            <button type="button" @click="previous" class="w-10 h-10 text-white flex items-center justify-center">
-                {% include 'includes/icons/player_back_icon.html' %}
-            </button>
+        <footer x-show="streamUrl !== ''" class="h-20 bg-gray-600 flex items-center w-full mx-auto"
+            style="display: none;">
+            <audio x-ref="player"></audio>
 
-            <template x-if="!isPlaying">
-                <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
-                    <button @click="play"
-                        class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
-                        <span class="text-xs font-semibold text-white">
-                            {% include 'includes/icons/play_icon.html' %}
-                        </span>
-                    </button>
+            <div class="flex-1 flex items-center gap-2 justify-start h-full pl-2">
+
+                <div class="w-14 h-14 flex items-center justify-center">
+                    <img :src="imgUrl" :alt="radioName" class="object-cover rounded-lg">
                 </div>
-            </template>
 
-            <template x-if="isPlaying">
-                <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
-                    <button @click="pause"
-                        class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
-                        <span class="text-xs font-semibold text-white">
-                            {% include 'includes/icons/pause_icon.html' %}
-                        </span>
-                    </button>
-                </div>
-            </template>
+                <p class="text-xs font-semibold text-white line-clamp-2" x-text="radioName"></p>
+            </div>
 
-            <button type="button" @click="next" class="w-10 h-10 text-white flex items-center justify-center">
-                {% include 'includes/icons/player_next_icon.html' %}
-            </button>
-        </div>
-
-        <div class="flex-1 flex justify-end pr-2">
-            <section class="flex items-center gap-1 w-24">
-                <button class="text-white" @click="toggleVolume">
-
-                    <span x-show="volume === 0" style="display: none;">
-                        {% include 'includes/icons/mute_icon.html' %}
-                    </span>
-
-                    <span x-show="volume > 0">
-                        {% include 'includes/icons/volume_icon.html' %}
-                    </span>
-
+            <div class="flex gap-2 items-center">
+                <button type="button" @click="previous" class="w-10 h-10 text-white flex items-center justify-center">
+                    {% include 'includes/icons/player_back_icon.html' %}
                 </button>
 
+                <template x-if="!isPlaying">
+                    <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                        <button @click="play"
+                            class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
+                            <span class="text-xs font-semibold text-white">
+                                {% include 'includes/icons/play_icon.html' %}
+                            </span>
+                        </button>
+                    </div>
+                </template>
 
-                <input class="p-0 m-0 w-full cursor-pointer range-slider" type="range" min="0" max="1" step="0.05"
-                    x-model.number="volume" @input="updateVolume" />
+                <template x-if="isPlaying">
+                    <div class="w-16 h-16 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                        <button @click="pause"
+                            class="flex justify-center items-center rounded-full h-10 w-10 bg-black ring-2 ring-white">
+                            <span class="text-xs font-semibold text-white">
+                                {% include 'includes/icons/pause_icon.html' %}
+                            </span>
+                        </button>
+                    </div>
+                </template>
 
-            </section>
-        </div>
+                <button type="button" @click="next" class="w-10 h-10 text-white flex items-center justify-center">
+                    {% include 'includes/icons/player_next_icon.html' %}
+                </button>
+            </div>
 
-    </footer>
+            <div class="flex-1 flex justify-end pr-2">
+                <section class="flex items-center gap-1 w-24">
+                    <button class="text-white" @click="toggleVolume">
 
+                        <span x-show="volume === 0" style="display: none;">
+                            {% include 'includes/icons/mute_icon.html' %}
+                        </span>
+
+                        <span x-show="volume > 0">
+                            {% include 'includes/icons/volume_icon.html' %}
+                        </span>
+
+                    </button>
+
+
+                    <input class="p-0 m-0 w-full cursor-pointer range-slider" type="range" min="0" max="1" step="0.05"
+                        x-model.number="volume" @input="updateVolume" />
+
+                </section>
+            </div>
+
+        </footer>
+    </section>
+
+    <section class="hidden md:block h-[600px] w-[160px] border">
+        <script type="text/javascript">
+            atOptions = {
+                'key': '2ec090e966f6dc71ae825abd14659763',
+                'format': 'iframe',
+                'height': 600,
+                'width': 160,
+                'params': {}
+            };
+        </script>
+        <script type="text/javascript"
+            src="//www.highperformanceformat.com/2ec090e966f6dc71ae825abd14659763/invoke.js"></script>
+    </section>
 </main>
 {% endblock %}
 
