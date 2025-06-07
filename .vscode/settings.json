@@ -1,6 +1,7 @@
 {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "[python]": {
+        "editor.formatOnSave": false,
         "editor.defaultFormatter": "ms-python.autopep8"
     },
     "python.languageServer": "Pylance",
