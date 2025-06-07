@@ -1,4 +1,5 @@
 # flake8: noqa: E402
+import sys
 import os
 import django
 import time
@@ -6,6 +7,8 @@ import schedule
 import requests
 
 from concurrent.futures import ThreadPoolExecutor
+
+sys.stdout.reconfigure(line_buffering=True)
 
 # 🚀 Configuración para standalone
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")  # ← Ajusta si tu archivo settings tiene otro nombre
